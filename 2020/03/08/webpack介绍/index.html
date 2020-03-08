@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>
+        Eloïse
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            webpack介绍
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h2 id="对项目构建的理解"><a href="#对项目构建的理解" class="headerlink" title="对项目构建的理解"></a>对项目构建的理解</h2><ol>
+<li><strong>构建项目到底做些什么</strong></li>
+</ol>
+<ul>
+<li>编译项目中的js, sass, less, stylus</li>
+<li>合并js/css等资源文件</li>
+<li>压缩js/css/html等资源文件</li>
+<li>JS语法的检查</li>
+</ul>
+<ol>
+<li><strong>构建工具</strong></li>
+</ol>
+<ul>
+<li>作用: 简化项目构建, 实现自动化构建</li>
+<li>常用: grunt/gulp/webpack</li>
+</ul>
+<h2 id="webpack的核心概念"><a href="#webpack的核心概念" class="headerlink" title="webpack的核心概念"></a>webpack的核心概念</h2><ol>
+<li><code>Entry</code>：入口，Webpack进行打包的起始点(文件)</li>
+<li><code>Output</code>：出口，webpack编译打包生成的bundle(文件)</li>
+<li><code>Loader</code>：模块加载(转换)器，将非js模块包装成webpack能理解的js模块</li>
+<li><code>Plugin</code>：插件，在 Webpack 构建流程中的特定时机插入具有特定功能的代码</li>
+<li><code>Module</code>：模块，在 Webpack眼里一切皆模块，默认只识别js文件, 如果是其它类型文件利用对应的loader转换为js模块</li>
+<li><code>Chunk/bundle</code>：代码块/束，一个 Chunk 由多个模块组合而成, 最终浏览器执行的是webpack打包生成的chunk文件</li>
+</ol>
+<h2 id="webpack配置文件的整体结构"><a href="#webpack配置文件的整体结构" class="headerlink" title="webpack配置文件的整体结构"></a>webpack配置文件的整体结构</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">module.exports &#x3D; &#123;</span><br><span class="line">  entry: &#39;&#39;,</span><br><span class="line">  output: &#123;&#125;,</span><br><span class="line">  module: &#123;rules: []&#125;,</span><br><span class="line">  plugins: []</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="webpack模块化打包的基本流程"><a href="#webpack模块化打包的基本流程" class="headerlink" title="webpack模块化打包的基本流程"></a>webpack模块化打包的基本流程</h2><ul>
+<li>1&gt; 连接: webpack从入口JS开始, 递归查找出所有相关联的模块, 并<code>连接</code>起来形成一个图(网)的结构</li>
+<li>2&gt; 编译: 将JS模块中的模块化语法<code>编译</code>为浏览器可以直接运行的模块语法(当然其它类型资源也会处理)</li>
+<li>3&gt; 合并: 将图中所有编译过的模块<code>合并</code>成一个或少量几个bundle文件, 而浏览器运行是打包生成的bundle文件</li>
+</ul>
+<h2 id="比较loader与plugin"><a href="#比较loader与plugin" class="headerlink" title="比较loader与plugin"></a>比较loader与plugin</h2><ul>
+<li><strong>loader</strong>: 用于加载特定类型的资源文件, webpack本身只能打包js, 如果打包css就需要css-loader/style-loader, 如果打包图片就需要file-loader</li>
+<li><strong>plugin</strong>: 用来扩展webpack其它方面的功能, 如生成页面需要html-webpack-plugin, 压缩js需要uglifyjs-webpack-plugin</li>
+</ul>
+
+    </div>
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
+    
+</div>
+    <div class="footer" id="footer">
+    <p>Copyright © 2020 <a class="flink" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek" target="_blank" rel="noopener">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="8U362Q6cy2X6gw6UkMlCYQFj-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="LEnAxkRAgKr9lxAvTbLKBGTo">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>

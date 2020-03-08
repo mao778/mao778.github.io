@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>
+        Eloïse
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            vue零碎知识点01——vue
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h2 id="对Vue的理解"><a href="#对Vue的理解" class="headerlink" title="对Vue的理解"></a>对Vue的理解</h2><ul>
+<li>vue是一个前端JS库</li>
+<li>MVVM模式的实现</li>
+<li><strong>作用</strong>: 动态构建用户界面</li>
+<li><strong>重要技术</strong>: 模板与数据绑定(angular), 组件与虚拟DOM(react)</li>
+</ul>
+<h2 id="MVVM设计模式"><a href="#MVVM设计模式" class="headerlink" title="MVVM设计模式"></a>MVVM设计模式</h2><ul>
+<li><code>M: Model(模型)</code>, vue中是data(为view提供数据)</li>
+<li><code>V: View(视图)</code>, vue中是模板页面(显示data中的数据)</li>
+<li><code>VM: ViewModel(视图模型)</code>, vue中是Vue实例对象(管理者: 数据绑定/DOM监听)</li>
+</ul>
+<h2 id="对计算属性的理解"><a href="#对计算属性的理解" class="headerlink" title="对计算属性的理解"></a>对计算属性的理解</h2><ul>
+<li>什么时候用计算属性?<ul>
+<li>模板显示要显示的数据是根据n个已有的相关数据进行计算来确定</li>
+</ul>
+</li>
+<li><strong>getter: get方法</strong>, 当读取属性值时/相关数据发生了改变自动调用, 根据相关数据进行计算并返回结果, this就是vm</li>
+<li><strong>setter: set方法</strong>, 当修改了当前属性的值自动调用, 监视属性值的变化去更新相关数据, this就是vm</li>
+</ul>
+<h2 id="异步显示数据效果的编码的3个部分"><a href="#异步显示数据效果的编码的3个部分" class="headerlink" title="异步显示数据效果的编码的3个部分"></a>异步显示数据效果的编码的3个部分</h2><ol>
+<li>ajax<ul>
+<li>ajax请求函数</li>
+<li>接口请求函数</li>
+</ul>
+</li>
+<li>vuex<ul>
+<li>state</li>
+<li>mutation-types</li>
+<li>actions</li>
+<li>mutations</li>
+</ul>
+</li>
+<li>组件<ul>
+<li>dispatch(): 异步获取后台数据到vuex的state</li>
+<li>mapState(): 从vuex的state中读取对应的数据模板中显示</li>
+</ul>
+</li>
+</ol>
+<h2 id="vue组件间通信的几种方式"><a href="#vue组件间通信的几种方式" class="headerlink" title="vue组件间通信的几种方式"></a>vue组件间通信的几种方式</h2><ol>
+<li><code>props</code>: 父子组件间相互通信, 可以传递一般数据/函数, 问题: 隔层组件（必须逐层传递）/兄弟组件（必须借助父组件）</li>
+<li><code>vue自定义事件</code>: 子组件与父组件的通信方式。代替函数类型的prop, 隔代/兄弟组件间的通信不方便</li>
+<li><code>消息订阅与发布(pubsub库)</code>: 适合于任何关系的组件间的通信， 缺点是管理不够集中</li>
+<li><code>slot</code>: 通信是带数据的标签, 而不仅仅是数据， 标签是在父组件中解析</li>
+<li><code>vuex</code>: 多组件共享状态（数据的管理）, 组件间的关系也没有限制，功能比pubsub强大，更适用于vue项目</li>
+</ol>
+<h2 id="vue项目中如何与后台通信"><a href="#vue项目中如何与后台通信" class="headerlink" title="vue项目中如何与后台通信"></a>vue项目中如何与后台通信</h2><ol>
+<li>通过ajax请求与后台通信</li>
+<li>常用的库有2个<ul>
+<li>vue-resource: vue的插件, 用于vue1.x</li>
+<li>axios: 独立的第三方库, 用于vue2.x</li>
+</ul>
+</li>
+<li>执行请求代码的时机<ul>
+<li>初始化异步显示: mounted()</li>
+<li>特定用户操作后异步显示: 事件回调函数或相关函数中</li>
+</ul>
+</li>
+</ol>
+<h2 id="vue的vm对象-组件对象的生命周期"><a href="#vue的vm对象-组件对象的生命周期" class="headerlink" title="vue的vm对象/组件对象的生命周期"></a>vue的vm对象/组件对象的生命周期</h2><ol>
+<li>初始化</li>
+</ol>
+<ul>
+<li><code>beforeCreate()</code></li>
+<li><code>created()</code></li>
+<li><code>beforeMount()</code></li>
+<li><code>mounted()</code>: 异步任务(发ajax请求/启动定时器)</li>
+</ul>
+<ol>
+<li>更新</li>
+</ol>
+<ul>
+<li><code>beforeUpdate()</code></li>
+<li><code>updated()</code></li>
+</ul>
+<ol>
+<li>死亡</li>
+</ol>
+<ul>
+<li><code>beforeDestroy():</code> 收尾工作(清除定时器)</li>
+<li><code>destroyed()</code></li>
+</ul>
+<h2 id="vue的7个指令及其作用"><a href="#vue的7个指令及其作用" class="headerlink" title="vue的7个指令及其作用"></a>vue的7个指令及其作用</h2><ul>
+<li><code>v-text</code>: 设置标签体文本</li>
+<li><code>v-html:</code> 设置标签体子标签</li>
+<li><code>v-if/v-else/v-show</code>: 显示/隐藏</li>
+<li><code>v-for</code>: 遍历显示列表</li>
+<li><code>v-bind</code>: 强制绑定表达式, 简写:</li>
+<li><code>v-on</code>: 绑定事件监听, 简写@</li>
+<li><code>v-model</code>: 双向数据绑定</li>
+</ul>
+<h2 id="区别v-if与v-show"><a href="#区别v-if与v-show" class="headerlink" title="区别v-if与v-show"></a>区别v-if与v-show</h2><ul>
+<li>如果频繁切换使用v-show比较合适</li>
+<li>一旦涉及到初始化模板显示3层表达式数据, 使用v-if可以解决问题</li>
+</ul>
+<h2 id="vue-router提供了哪些API"><a href="#vue-router提供了哪些API" class="headerlink" title="vue-router提供了哪些API"></a>vue-router提供了哪些API</h2><ol>
+<li><p>1个构造函数</p>
+<ul>
+<li><code>VueRouter</code></li>
+</ul>
+</li>
+<li><p>2个对象</p>
+<ul>
+<li><p>$route</p>
+<p>: 包含当前路由信息的路由对象</p>
+<ul>
+<li>path</li>
+<li>params.xxx</li>
+<li>query.xxx</li>
+</ul>
+</li>
+<li><p>$router:</p>
+</li>
+</ul>
+</li>
+</ol>
+<pre><code>包含操作路由的路由器对象
+
+- push(path)
+- replace(path)
+- back()</code></pre><ol start="3">
+<li><p>3个组件标签</p>
+<ul>
+<li>router-link</li>
+<li>router-view</li>
+<li>keep-alive</li>
+</ul>
+</li>
+</ol>
+<h2 id="说说使用vue和jQuery开发项目的区别"><a href="#说说使用vue和jQuery开发项目的区别" class="headerlink" title="说说使用vue和jQuery开发项目的区别"></a>说说使用vue和jQuery开发项目的区别</h2><table>
+<thead>
+<tr>
+<th align="left"></th>
+<th>vue</th>
+<th>jQuery</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">是否直接操作DOM</td>
+<td>不(利用数据绑定</td>
+<td>是(只是简化原生DOM语法)</td>
+</tr>
+<tr>
+<td align="left">是否组件化化开发</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td align="left">是否包含ajax封装模块</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td align="left">是否实现SPA</td>
+<td>是</td>
+<td>否</td>
+</tr>
+</tbody></table>
+
+    </div>
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
+    
+</div>
+    <div class="footer" id="footer">
+    <p>Copyright © 2020 <a class="flink" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek" target="_blank" rel="noopener">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="8U362Q6cy2X6gw6UkMlCYQFj-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="LEnAxkRAgKr9lxAvTbLKBGTo">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>

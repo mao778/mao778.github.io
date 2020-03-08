@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>
+        Eloïse
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            vue零碎知识点03——模板
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h2 id="对模板的理解"><a href="#对模板的理解" class="headerlink" title="对模板的理解"></a>对模板的理解</h2><ul>
+<li>html中嵌套js</li>
+<li>指令</li>
+<li>大括号表达式</li>
+</ul>
+<h2 id="模板中显示数据的来源"><a href="#模板中显示数据的来源" class="headerlink" title="模板中显示数据的来源"></a>模板中显示数据的来源</h2><ul>
+<li><code>data</code></li>
+<li><code>props</code></li>
+<li><code>computed</code>: 根据data/props/其他的computed/vuex的state或getters计算产生</li>
+</ul>
+<h2 id="vue的常用配置选项及其作用-5个"><a href="#vue的常用配置选项及其作用-5个" class="headerlink" title="vue的常用配置选项及其作用(5个)"></a>vue的常用配置选项及其作用(5个)</h2><ul>
+<li><code>el</code>: 最外层元素选择器</li>
+<li><code>data</code>: 状态数据</li>
+<li><code>computed</code>: 计算属性</li>
+<li><code>methods</code>: 事件回调函数</li>
+<li><code>watch</code>: 监视属性变化</li>
+</ul>
+<h2 id="说说你对数据代理的理解和实现"><a href="#说说你对数据代理的理解和实现" class="headerlink" title="说说你对数据代理的理解和实现"></a>说说你对数据代理的理解和实现</h2><ol>
+<li><strong>什么</strong>: 一个对象代理(vm)对其内部另一个对象(data)中数据的操作(读/写)</li>
+<li><strong>作用</strong>: 简化编码</li>
+<li>实现:<ul>
+<li>给vm添加与data中所有属性对应的属性(使用属性描述符)</li>
+<li>指定getter/setter</li>
+<li>在getter中读取data中对应的属性返回</li>
+<li>在setter中将最新的值保存到data中对应的属性上</li>
+</ul>
+</li>
+</ol>
+<h2 id="说说模板解析的主要3步"><a href="#说说模板解析的主要3步" class="headerlink" title="说说模板解析的主要3步"></a>说说模板解析的主要3步</h2><ol>
+<li>将el元素中所有子节点转移到内存的fragment容器中</li>
+<li>解析fragment中所有层次的子节点</li>
+<li>将解析好的fragment添加到el元素中显示</li>
+</ol>
+<h2 id="大括号表达式解析的基本流程"><a href="#大括号表达式解析的基本流程" class="headerlink" title="大括号表达式解析的基本流程"></a>大括号表达式解析的基本流程</h2><ol>
+<li>根据正则对象得到匹配出的表达式字符串: 子匹配/RegExp.$1</li>
+<li>从data中取出表达式对应的属性值</li>
+<li>将属性值设置为文本节点的textContent</li>
+</ol>
+<h2 id="debug调试的3个问题"><a href="#debug调试的3个问题" class="headerlink" title="debug调试的3个问题"></a>debug调试的3个问题</h2><ol>
+<li>如何启动debug模式?<ul>
+<li>浏览器加断点<ul>
+<li>代码中debugger语句</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>在哪打断点?<ul>
+<li>在需要观察/可疑的代码前加断点</li>
+</ul>
+</li>
+<li>什么时候打断点?<ul>
+<li>调试之前</li>
+<li>调试过程中</li>
+</ul>
+</li>
+</ol>
+<h2 id="说说数据绑定的理解和基本原理"><a href="#说说数据绑定的理解和基本原理" class="headerlink" title="说说数据绑定的理解和基本原理"></a>说说数据绑定的理解和基本原理</h2><ol>
+<li>通过<code>Object.defineProperterty()</code>给data中所有属性添加setter/getter, 实现数据劫持</li>
+<li>为每个data中的属性创建一个对应的dep对象, 一旦属性数据变化, 通知dep对象</li>
+<li>为模板中的每个表达式创建对应的watcher, 并关联到对应的dep上</li>
+<li>一旦dep收到数据变化的通知, 会通知所有关联的watcher, watcher收到通知后就更新对应的节点</li>
+</ol>
+<h2 id="Vue的双向数据绑定实现"><a href="#Vue的双向数据绑定实现" class="headerlink" title="Vue的双向数据绑定实现"></a>Vue的双向数据绑定实现</h2><ol>
+<li>双向数据绑定是建立在单向数据绑定(model==&gt;View)的基础之上的</li>
+<li>双向数据绑定的实现流程:<ul>
+<li>在解析v-model指令时, 给当前元素添加input监听</li>
+<li>当input的value发生改变时, 将最新的值赋值给当前表达式所对应的data属性</li>
+</ul>
+</li>
+</ol>
+
+    </div>
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
+    
+</div>
+    <div class="footer" id="footer">
+    <p>Copyright © 2020 <a class="flink" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek" target="_blank" rel="noopener">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="8U362Q6cy2X6gw6UkMlCYQFj-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="LEnAxkRAgKr9lxAvTbLKBGTo">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>

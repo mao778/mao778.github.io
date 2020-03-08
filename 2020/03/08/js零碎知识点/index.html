@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>
+        Eloïse
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            js零碎知识点
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h2 id="对请求参数的理解"><a href="#对请求参数的理解" class="headerlink" title="对请求参数的理解"></a>对请求参数的理解</h2><ol>
+<li>query参数</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">路由的path: &#x2F;xxx</span><br><span class="line">请求的路径: &#x2F;xxx?name&#x3D;tom&amp;age&#x3D;18</span><br><span class="line">?后面的部分就是query参数: name&#x3D;tom, age&#x3D;18      req.query.age</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>param参数</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">路由的path: &#x2F;xxx&#x2F;:name&#x2F;:age</span><br><span class="line">请求的路径: &#x2F;xxx&#x2F;jack&#x2F;18</span><br><span class="line">param参数: name&#x3D;jack, age&#x3D;18     req.params.age</span><br><span class="line">params.name, params.age</span><br></pre></td></tr></table></figure>
+
+<h2 id="对回调函数的理解"><a href="#对回调函数的理解" class="headerlink" title="对回调函数的理解"></a>对回调函数的理解</h2><ol>
+<li>你定义的</li>
+<li>你没有调用</li>
+<li>但最终它执行了</li>
+</ol>
+<h2 id="什么是接口-如何对接口"><a href="#什么是接口-如何对接口" class="headerlink" title="什么是接口, 如何对接口"></a>什么是接口, 如何对接口</h2><ol>
+<li><strong>接口</strong>: url / 请求方式 / 请求参数格式 / 响应数据格式</li>
+<li><strong>对接口</strong>: 根据接口文档请求后台, 看真实接口与文档是否一致</li>
+</ol>
+<h2 id="如何判断函数中的this"><a href="#如何判断函数中的this" class="headerlink" title="如何判断函数中的this"></a>如何判断函数中的this</h2><ol>
+<li><strong>正常情况:</strong> 执行函数的方式决定了函数中的this<ul>
+<li>直接调用: fn() window</li>
+<li>new调用: new fn() 新创建的对象</li>
+<li>对象调用: obj.fn() obj对象</li>
+<li>call/apply调用: fn.call(obj) 第一个参数指定的对象</li>
+</ul>
+</li>
+<li><strong>特别情况:</strong><ul>
+<li><em>bind()返回的函数</em>: fn.bind(obj)() 第一个参数指定的对象</li>
+<li><em>箭头函数</em>: 使用的外部的this(内部没有自己的this)</li>
+<li>回调函数<ul>
+<li>定时器回调/ajax回调/数组遍历相关方法回调: window</li>
+<li>dom事件监听回调: dom元素</li>
+<li>组件生命周期回调: 组件对象</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="对纯函数与高阶函数的理解"><a href="#对纯函数与高阶函数的理解" class="headerlink" title="对纯函数与高阶函数的理解"></a>对纯函数与高阶函数的理解</h2><ol>
+<li><strong>纯函数</strong>: 一类特别的函数<ul>
+<li>多次调用, 如果实相同, 返回值也必须相同</li>
+<li>不能修改参数</li>
+<li>不能调用不纯的函数</li>
+<li>不同进行文件流操作</li>
+</ul>
+</li>
+<li><strong>高阶函数</strong>: 一类特别的函数<ul>
+<li>参数是函数或者返回值是函数</li>
+<li>常见: 定时器设置函数/数组的遍历相关的方法/connect()</li>
+<li>作用: 使用函数功能更动态,更可扩展</li>
+</ul>
+</li>
+</ol>
+<h2 id="对async和await的理解和使用"><a href="#对async和await的理解和使用" class="headerlink" title="对async和await的理解和使用"></a>对async和await的理解和使用</h2><ol>
+<li>简化promise的使用</li>
+<li>以同步编码方式实现异步流程</li>
+<li><strong>使用await</strong>: 调用返回promise的函数, 如果想直接异步结果数据, 在左侧使用</li>
+<li><strong>使用async</strong>: 在使用await所在的函数定义左侧</li>
+</ol>
+<h2 id="对json数据的理解"><a href="#对json数据的理解" class="headerlink" title="对json数据的理解"></a>对json数据的理解</h2><ol>
+<li><strong>什么</strong>: json是一种用来存储结构化数据的文本数据结构</li>
+<li><strong>优点</strong>: 小巧, 可以轻松的与js相互转换</li>
+<li>整体类型:<ul>
+<li>json对象: {}, 与js对象对应</li>
+<li>json数组: [] 与js数组对应</li>
+</ul>
+</li>
+<li>组成:<ul>
+<li>结构: 类型与名称</li>
+<li>值</li>
+</ul>
+</li>
+<li>模拟json数据:<ul>
+<li>与真实json数据在结构上要相同, 值可以不同</li>
+</ul>
+</li>
+</ol>
+<h2 id="对mock数据的理解"><a href="#对mock数据的理解" class="headerlink" title="对mock数据的理解"></a>对mock数据的理解</h2><ol>
+<li>对于前后台分离的项目来说, 前后台可以独立开发, 当后台还没有写好时, 前台应用就可以编写了</li>
+<li>前台应用需要自己mock数据接口动态为前台提供数据, 当真实接口完成后, 切换到真实接口即可</li>
+<li>要求: mock的json数据与真实接口的数据在结构上要相同</li>
+<li>工具包: <code>mockjs</code></li>
+</ol>
+<h2 id="对socket-io的理解"><a href="#对socket-io的理解" class="headerlink" title="对socket.io的理解"></a>对socket.io的理解</h2><ul>
+<li>实现实时聊天的库</li>
+<li>包装的H5 WebSocket和轮询—&gt; 兼容性/编码简洁性</li>
+<li>包含2个包:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">socket.io: 用于服务器端</span><br><span class="line">socket.io-client: 用于客户端</span><br></pre></td></tr></table></figure>
+
+<h2 id="对变量提升与函数提升的理解"><a href="#对变量提升与函数提升的理解" class="headerlink" title="对变量提升与函数提升的理解"></a>对变量提升与函数提升的理解</h2><ol>
+<li>变量提升: 在变量语句前就可以读取到变量, 值为undefined</li>
+<li>函数提升: 在函数定义语句前就可以调用函数</li>
+<li>原因: JS引擎在运行全局代码/执行函数前有预处理/解析</li>
+</ol>
+<h2 id="对原型链的理解"><a href="#对原型链的理解" class="headerlink" title="对原型链的理解"></a>对原型链的理解</h2><ol>
+<li><strong>作用</strong>: 原型链用于查找对象的属性</li>
+<li><strong>什么</strong>: 实例对象上都会有一个隐式原型属性(<strong>proto</strong>), 它指向的就是原型对象, 而原型对象也有<strong>proto</strong>属性指向它的原型对象</li>
+<li>为什么proto指向的是原型对象?<ul>
+<li>构造函数对象上有显式原型属性(prototype), 它指向的就是原型对象</li>
+<li>实例对象的<strong>proto</strong>属性被赋值为构造函数的prototype属性值</li>
+</ul>
+</li>
+</ol>
+<h2 id="对作用域链的理解"><a href="#对作用域链的理解" class="headerlink" title="对作用域链的理解"></a>对作用域链的理解</h2><ol>
+<li><strong>作用</strong>: 作用链用来查找变量</li>
+<li><strong>什么</strong>: 多个由内向外作用域形成的链</li>
+<li><strong>作用域</strong>: 一块代码区域, 分类全局作用域和函数/局部作用域, ES6有了块作用域</li>
+</ol>
+<h2 id="console-log-a-b-的查找流程"><a href="#console-log-a-b-的查找流程" class="headerlink" title="console.log(a.b)的查找流程"></a>console.log(a.b)的查找流程</h2><ul>
+<li>先查找a, 沿着作用域链查找, 找不到报错(变量未定义)</li>
+<li>找到后查找对象上的b属性, 查找原型链, 如果找不到返回undefined</li>
+</ul>
+<h2 id="对闭包的理解"><a href="#对闭包的理解" class="headerlink" title="对闭包的理解"></a>对闭包的理解</h2><ol>
+<li>如何产生闭包?<ul>
+<li>2个函数嵌套</li>
+<li>内部函数引用了外部函数内的局部变量</li>
+<li>执行外部函数</li>
+</ul>
+</li>
+<li>是什么?<ul>
+<li>包含了那个局部变量的容器</li>
+<li>它被内部函数对象引用着</li>
+</ul>
+</li>
+<li>作用?<ul>
+<li>延长局部变量的生命周期</li>
+<li>使函数外部可以多次间接操作到函数内部的数据</li>
+</ul>
+</li>
+<li>应用?<ul>
+<li>循环遍历加监听</li>
+<li>IIFE定义模块</li>
+<li>jQuery内部</li>
+</ul>
+</li>
+<li>代码演示:</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function fn1 () &#123;</span><br><span class="line">	var a &#x3D; 2</span><br><span class="line">	function fn2 () &#123;</span><br><span class="line">		a++</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">	return fn2</span><br><span class="line">&#125;</span><br><span class="line">const f &#x3D; fn1()</span><br><span class="line">f()</span><br><span class="line">f()</span><br><span class="line">f &#x3D; null</span><br></pre></td></tr></table></figure>
+
+<h2 id="对cookie的理解-分类-创建-保存-使用"><a href="#对cookie的理解-分类-创建-保存-使用" class="headerlink" title="对cookie的理解(分类, 创建, 保存, 使用)"></a>对cookie的理解(分类, 创建, 保存, 使用)</h2><ul>
+<li>cookie由key和value组成的文本小数据</li>
+<li>分类: 会话cookie和持久化cookie</li>
+<li>由服务器端创建: res.cookie(key, value, {maxAge: 1000})</li>
+<li>由浏览器端保存: 浏览器接收到新的cookie会自动保存(内存/文件)</li>
+<li>使用: 浏览器发送请求时自动携带对应的cookie, 服务器端通过req读取: req.cookies.key</li>
+</ul>
+<h2 id="区别localStorage和sessionStorage-session与cookie"><a href="#区别localStorage和sessionStorage-session与cookie" class="headerlink" title="区别localStorage和sessionStorage, session与cookie"></a>区别localStorage和sessionStorage, session与cookie</h2><ul>
+<li><code>localStorage</code>: 浏览器端持久化存储, 关闭浏览还存在, 最大5MB(基本没限制了)</li>
+<li><code>sessionStorage</code>: 浏览器端内存存储, 关闭浏览器不存在</li>
+<li><code>session</code>: 服务器端创建, 服务器端保存, 依赖于cookie`</li>
+<li><code>cookie</code>: 服务器端创建, 浏览器端保存, 请求携带对应cookie, 长度和数量有限制(4kb)</li>
+</ul>
+<h2 id="对commonjs模块化规范的理解"><a href="#对commonjs模块化规范的理解" class="headerlink" title="对commonjs模块化规范的理解"></a>对commonjs模块化规范的理解</h2><ol>
+<li><strong>暴露模块</strong><ul>
+<li>向外暴露的永远是exports</li>
+<li><em>方式一</em>: module.exports = value</li>
+<li><em>方式二</em>: exports.xxx = value1 /  exports.yyy = value2</li>
+</ul>
+</li>
+<li><strong>引入模块</strong><ol>
+<li>const module = require(‘模块名/模块路径’)</li>
+</ol>
+</li>
+</ol>
+<h2 id="对代理的理解"><a href="#对代理的理解" class="headerlink" title="对代理的理解"></a>对代理的理解</h2><ol>
+<li>代理的作用<ul>
+<li>拦截前台应用发出的请求(3001), 转发请求到配置指定的地址(后台应用4000)</li>
+</ul>
+</li>
+<li>是什么<ul>
+<li>一个应用程序</li>
+</ul>
+</li>
+<li>代理运行在哪端<ul>
+<li>前台应用的服务器上</li>
+</ul>
+</li>
+<li>配置代理<ul>
+<li>告诉代理一些信息: 转发的目标地址</li>
+</ul>
+</li>
+</ol>
+<h2 id="chrome调试应用的常用功能-窗口"><a href="#chrome调试应用的常用功能-窗口" class="headerlink" title="chrome调试应用的常用功能(窗口)"></a>chrome调试应用的常用功能(窗口)</h2><ul>
+<li><code>Elements</code>: 查看DOM标签和样式</li>
+<li><code>Console:</code> 查看打印和错误信息</li>
+<li><code>NetWork:</code> 查看请求(url, 请求方式, 请求参数)和响应</li>
+<li><code>Application</code>: 查看浏览器端存储(localStorage, cookie)</li>
+<li><code>Sources</code>: debugger调试</li>
+<li><code>react:</code> 查看react组件(state, props)</li>
+<li><code>redux</code>: 查看redux管理的state</li>
+</ul>
+<h2 id="后台路由回调函数处理的3步"><a href="#后台路由回调函数处理的3步" class="headerlink" title="后台路由回调函数处理的3步"></a>后台路由回调函数处理的3步</h2><ol>
+<li>通过req读取请求参数数据</li>
+<li>处理数据(与数据库交互)</li>
+<li>通过res向浏览器端返回响应</li>
+</ol>
+<h2 id="区别对象容器与数组容器"><a href="#区别对象容器与数组容器" class="headerlink" title="区别对象容器与数组容器"></a>区别对象容器与数组容器</h2><ol>
+<li><strong>数组</strong>: 数据有序, 根据下标取数据, 如果不知道下标只能遍历查找</li>
+<li><strong>对象</strong>: 数据无序, 根据属性名取数据, 如果知道属性名不需要遍历</li>
+</ol>
+<h2 id="说说你对路由的理解"><a href="#说说你对路由的理解" class="headerlink" title="说说你对路由的理解"></a>说说你对路由的理解</h2><ol>
+<li>什么是路由?<ul>
+<li>一个路由就是一个映射关系(key:value)</li>
+<li>key为路由路径, value可能是function/component</li>
+</ul>
+</li>
+<li>路由分类<ul>
+<li><em>后台路由</em>: node服务器端路由, value是function, 用来处理客户端提交的请求并返回一个响应数据</li>
+<li><em>前台路由</em>: 浏览器端路由, value是component, 当请求的是路由path时, 浏览器端前没有发送http请求, 但界面会更新显示对应的组件</li>
+</ul>
+</li>
+</ol>
+<h2 id="编码实现-根据一个一维数组生成一个二维数组-内部数组最大长度是6"><a href="#编码实现-根据一个一维数组生成一个二维数组-内部数组最大长度是6" class="headerlink" title="编码实现: 根据一个一维数组生成一个二维数组(内部数组最大长度是6)"></a>编码实现: 根据一个一维数组生成一个二维数组(内部数组最大长度是6)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">const arr1 &#x3D; [1, 3, 5, 7, 13, 9, 14, 12, 11, 9, 4, 2]</span><br><span class="line">const arr2 &#x3D; []</span><br><span class="line">let smallArr &#x3D; []</span><br><span class="line">const max &#x3D; 6</span><br><span class="line"></span><br><span class="line">arr1.forEach(item &#x3D;&gt; &#123;</span><br><span class="line"></span><br><span class="line">  if(smallArr.length&#x3D;&#x3D;&#x3D;max) &#123;</span><br><span class="line">    smallArr &#x3D; []</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  if(smallArr.length&#x3D;&#x3D;&#x3D;0) &#123;</span><br><span class="line">    arr2.push(smallArr)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  smallArr.push(item)</span><br><span class="line">&#125;)</span><br><span class="line">console.log(arr2)</span><br></pre></td></tr></table></figure>
+
+<h2 id="编码实现：用数组的相关方法实现以下业务需求"><a href="#编码实现：用数组的相关方法实现以下业务需求" class="headerlink" title="编码实现：用数组的相关方法实现以下业务需求"></a>编码实现：用数组的相关方法实现以下业务需求</h2><ul>
+<li>公司前后招聘了10个员工(性别,年龄, 月薪各不相同),有以下需求</li>
+</ul>
+<ol>
+<li>列表显示所有员工的所有信息</li>
+<li>对员工进行年薪降序列表显示</li>
+<li>得到男员工的总月薪</li>
+<li>查找一个月薪只比1200高一点点的员工</li>
+<li>查找出所有月薪高于1200的员工</li>
+<li>列表显示所有员工的姓名/性别和年薪</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">const employees &#x3D; [</span><br><span class="line">	&#123;name: &#39;A&#39;, sex: &#39;男&#39;, age: 21, salary: 10000&#125;,</span><br><span class="line">	&#123;name: &#39;B&#39;, sex: &#39;女&#39;, age: 25, salary: 12000&#125;,</span><br><span class="line">	&#123;name: &#39;C&#39;, sex: &#39;男&#39;, age: 24, salary: 13000&#125;,</span><br><span class="line">	&#123;name: &#39;D&#39;, sex: &#39;男&#39;, age: 24, salary: 12500&#125;,</span><br><span class="line">	&#123;name: &#39;E&#39;, sex: &#39;女&#39;, age: 21, salary: 14000&#125;,</span><br><span class="line">	&#123;name: &#39;F&#39;, sex: &#39;男&#39;, age: 24, salary: 16000&#125;,</span><br><span class="line">	&#123;name: &#39;G&#39;, sex: &#39;男&#39;, age: 23, salary: 9000&#125;,</span><br><span class="line">	&#123;name: &#39;H&#39;, sex: &#39;女&#39;, age: 21, salary: 11000&#125;,</span><br><span class="line">	&#123;name: &#39;I&#39;, sex: &#39;男&#39;, age: 23, salary: 13200&#125;,</span><br><span class="line">	&#123;name: &#39;J&#39;, sex: &#39;男&#39;, age: 23, salary: 15000&#125;</span><br><span class="line">]</span><br><span class="line">1). employees.forEach(e &#x3D;&gt; console.log(e))</span><br><span class="line">2). employees.sort((e1, e2) &#x3D;&gt; e2.salary-e1.salary)</span><br><span class="line">3). employees.reduce((preTotal, e) &#x3D;&gt; preTotal + (e.sex&#x3D;&#x3D;&#39;男&#39;?e.salary:0), 0)</span><br><span class="line">4). employees.find(e &#x3D;&gt; e.salary&gt;1200 &amp;&amp; e.salary&lt;1400 &amp;&amp; e.sex&#x3D;&#x3D;&#x3D;&#39;男&#39;)</span><br><span class="line">5). employees.filter(e &#x3D;&gt; e.salary&gt;1200)</span><br><span class="line">6). employees.map(e &#x3D;&gt; (&#123;&#39;姓名&#x2F;性别&#39;: &#96;$&#123;e.name&#125;&#x2F;$&#123;e.sex&#125;&#96;, &#39;年薪&#39;: e.salary*12&#125;))</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
+    
+</div>
+    <div class="footer" id="footer">
+    <p>Copyright © 2020 <a class="flink" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek" target="_blank" rel="noopener">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="8U362Q6cy2X6gw6UkMlCYQFj-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="LEnAxkRAgKr9lxAvTbLKBGTo">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>
