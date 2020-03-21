@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>
+        Eloïse
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            webpack4优化个人总结
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <blockquote>
+<p>“webpack”: “^4.26.1”</p>
+</blockquote>
+<h2 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h2><blockquote>
+<p>(引用官网) webpack 是一个现代 JavaScript 应用程序的静态模块打包工具。当 webpack 处理应用程序时，它会在内部构建一个 依赖图(dependency graph)，此依赖图会映射项目所需的每个模块，并生成一个或多个 bundle。</p>
+</blockquote>
+<ul>
+<li>entry: 入口</li>
+<li>output: 输出</li>
+<li>loader: 模块转换器，用于对模块的源代码进行转换</li>
+<li>plugin: 扩展插件，比起loader，它能执行范围更广的任务。包括：打包优化，资源管理，等。（使用时需要进行引入！）</li>
+<li>optimization: 优化，从<code>webpack4</code>开始， 会根据你选择的<code>mode</code>来执行不同的优化，不过所有的优化也可以选择自己手动配置和重写</li>
+</ul>
+<h2 id="二、相关模块"><a href="#二、相关模块" class="headerlink" title="二、相关模块"></a>二、相关模块</h2><blockquote>
+<p>目前只举例部项目中所使用过/使用到的部分模块<br>并只对目前已使用到的/使用过的做详细介绍🤖🤖</p>
+</blockquote>
+<h3 id="loader"><a href="#loader" class="headerlink" title="loader"></a>loader</h3><h4 id="babel-loader"><a href="#babel-loader" class="headerlink" title="babel-loader"></a>babel-loader</h4><blockquote>
+<p>方便你使用Babel和webpack转译JavaScript文件<br>注： Babel为js编译器，主要用于将ECMAScript 2015+代码转换为向后兼容版本的js代码<br>点击可查看了解更多<a href="https://babel.docschina.org/docs/en/" target="_blank" rel="noopener">Babel相关</a></p>
+</blockquote>
+<p><strong><code>options</code>属性</strong></p>
+<ul>
+<li><p><code>cacheDirectory</code></p>
+<blockquote>
+<p>默认值为<code>false</code><br>当设置为<code>true</code>/空，将开启文件缓存。以避免在每次执行编译文件时，都可能产生高性能消耗的Babel重新编译过程。（缓存目录： <code>node_modules/.cache/babel-loader</code>）</p>
+</blockquote>
+</li>
+<li><p><code>cacheIdentifier</code> <string></p>
+</li>
+<li><p><code>cacheCompression</code></p>
+<blockquote>
+<p>默认值为<code>ture</code></p>
+</blockquote>
+</li>
+<li><p><code>customize</code></p>
+<blockquote>
+<p>默认值为<code>null</code></p>
+</blockquote>
+</li>
+</ul>
+<h4 id="url-loader"><a href="#url-loader" class="headerlink" title="url-loader"></a>url-loader</h4><blockquote>
+<p>用以处理本地的资源文件, 依赖于<code>file-loader</code>，可以将图片转换成base64，并嵌入到html中，以此减少小文件的HTTP请求数。当在文件大小超过一定阈值（指定limit, 单位byte）时，交给file-loader做处理。</p>
+</blockquote>
+<p>默认情况下，生成的文件的文件名就是文件内容的MD5哈希值并保留所引用资源的原始扩展名，可通过options.name参数进行修改</p>
+<h4 id="vue-loader"><a href="#vue-loader" class="headerlink" title="vue-loader"></a>vue-loader</h4><blockquote>
+<p>解析和转换.vue文件，<strong>提取</strong>出其中的逻辑代码<code>script</code>， 样式代码<code>style</code>， 以及<code>HTML</code>模版，再根据配置的响应模块进行分别处理。</p>
+</blockquote>
+<h3 id="插件（plugin）"><a href="#插件（plugin）" class="headerlink" title="插件（plugin）"></a>插件（plugin）</h3><h4 id="html-webpack-plugin"><a href="#html-webpack-plugin" class="headerlink" title="html-webpack-plugin"></a>html-webpack-plugin</h4><blockquote>
+<p>用来生成html文件（自动引入js/css）</p>
+</blockquote>
+<h4 id="clean-webpack-plugin"><a href="#clean-webpack-plugin" class="headerlink" title="clean-webpack-plugin"></a>clean-webpack-plugin</h4><blockquote>
+<p>每次打包前清空dist目录</p>
+</blockquote>
+<p>由于每次修改文件，重新构建，生成的hash值和之前dist中的不一样😳，因此引用此plugin先清空一波dist目录，这样才不会出现太多文件，还傻傻分不清到底谁是新生成文件的情况。<br><strong>希望dist目录下某个文件夹不被清空</strong><br>可使用配置<code>cleanOnceBeforeBuildPatterns</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack.config.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">	plugins: [</span><br><span class="line">		<span class="keyword">new</span> CleanWebpackPlugin(&#123;</span><br><span class="line">			cleanOnceBeforeBuildPatterns: [<span class="string">'**/*'</span>, <span class="string">'!dll'</span>, <span class="string">'!dll/**'</span>] <span class="comment">//不删除dll目录下的文件</span></span><br><span class="line">		&#125;)</span><br><span class="line">	]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="copy-webpack-plugin"><a href="#copy-webpack-plugin" class="headerlink" title="copy-webpack-plugin"></a>copy-webpack-plugin</h4><blockquote>
+<p>将指定的单个文件或整个目录复制到构建目录。</p>
+</blockquote>
+<h4 id="terser-webpack-plugin"><a href="#terser-webpack-plugin" class="headerlink" title="terser-webpack-plugin"></a>terser-webpack-plugin</h4><blockquote>
+<p>压缩Js</p>
+</blockquote>
+<p>terser比起uglify，会拥有更好的性能，对ES6+的语法支持更多，也兼容了babel 7的生态。</p>
+<h4 id="babili-webpack-plugin"><a href="#babili-webpack-plugin" class="headerlink" title="babili-webpack-plugin"></a>babili-webpack-plugin</h4><blockquote>
+<p>基于Babel的压缩工具， 可取代UglifyJs， 全称<code>Babel Minify Webpack Plugin</code></p>
+</blockquote>
+<h4 id="optimize-css-assets-webpack-plugin"><a href="#optimize-css-assets-webpack-plugin" class="headerlink" title="optimize-css-assets-webpack-plugin"></a>optimize-css-assets-webpack-plugin</h4><blockquote>
+<p>压缩css</p>
+</blockquote>
+<h3 id="webpack-dev-middleware"><a href="#webpack-dev-middleware" class="headerlink" title="webpack-dev-middleware"></a>webpack-dev-middleware</h3><blockquote>
+<p>函数类型的包装模块，与webpack-hot-middleware组合实现HMR(Hot Module Replacement)<br>将项目编译打包到内存中，而不生成本地打包文件。比起磁盘操作会更加快速和高效。</p>
+</blockquote>
+<h3 id="webpack-hot-middleware"><a href="#webpack-hot-middleware" class="headerlink" title="webpack-hot-middleware"></a>webpack-hot-middleware</h3><blockquote>
+<p>用来实现HMR的模块（负责页面的热重载，刷新游览器）</p>
+</blockquote>
+<h2 id="三、性能优化"><a href="#三、性能优化" class="headerlink" title="三、性能优化"></a>三、性能优化</h2><h3 id="可视化优化工具"><a href="#可视化优化工具" class="headerlink" title="可视化优化工具"></a>可视化优化工具</h3><h4 id="1-检测构建时间"><a href="#1-检测构建时间" class="headerlink" title="1. 检测构建时间"></a>1. 检测构建时间</h4><blockquote>
+<p><code>speed-measure-webpack-plugin</code><br>可以测量各个插件和<code>loader</code>所话费的时间</p>
+</blockquote>
+<h4 id="2-检测包体积-内容"><a href="#2-检测包体积-内容" class="headerlink" title="2. 检测包体积/内容"></a>2. 检测包体积/内容</h4><blockquote>
+<p><code>webpack-bundle-analyzer</code></p>
+</blockquote>
+<p>更多工具可以点击查看<a href="https://webpack.docschina.org/guides/code-splitting/#bundle-%E5%88%86%E6%9E%90-bundle-analysis-" target="_blank" rel="noopener">官方bundle 分析(bundle analysis)</a></p>
+<h3 id="优化开发体验"><a href="#优化开发体验" class="headerlink" title="优化开发体验"></a>优化开发体验</h3><h4 id="1-构建速度"><a href="#1-构建速度" class="headerlink" title="1. 构建速度"></a>1. 构建速度</h4><ul>
+<li><p>缩小文件搜索范围：<code>loader —&gt; include</code><br><code>exclude</code>指定要排除的文件，<code>include</code>指定要包含的文件。<br><code>exclude</code>的优先级高于<code>include</code>，使用绝对路径数组。</p>
+</li>
+<li><p><code>cache-loader</code>：缓存于磁盘</p>
+</li>
+<li><p>使用<code>HappyPack</code>：多进程构建<br>如有大量文件需要解析处理，webpack作为单线程，构建慢的问题则会显得严重。<br><code>happyPack</code>会吧任务分解给多个子进程去并发的执行，子进程处理完后再将结果发给主进程。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack.config.js</span></span><br><span class="line"><span class="keyword">const</span> HappyPack = <span class="built_in">require</span>(<span class="string">'happypack'</span>)</span><br><span class="line"><span class="keyword">const</span> happyThreadPool = HappyPack.ThreadPool(&#123; <span class="attr">size</span>: os.cpus().length &#125;)</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">              loader: <span class="string">'HappyPack/loader?id=js'</span>,</span><br><span class="line">              exclude: <span class="regexp">/node_modules/</span></span><br><span class="line">          &#125;,</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  plugins: [</span><br><span class="line">    <span class="keyword">new</span> HappyPack(&#123;</span><br><span class="line">           id: <span class="string">'js'</span>,</span><br><span class="line">            threadPool: happyThreadPool,</span><br><span class="line">           loaders: [</span><br><span class="line">              &#123;</span><br><span class="line">                loader: <span class="string">'babel-loader'</span>,</span><br><span class="line">               options: &#123;</span><br><span class="line">                 cacheDirectory: <span class="literal">true</span></span><br><span class="line">                &#125;</span><br><span class="line">             &#125;</span><br><span class="line">          ]</span><br><span class="line">      &#125;),</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 若项目并不是十分复杂，则没必要配置<code>happyPack</code>。毕竟进程的分配管理也要时间 - -。</p>
+</li>
+<li><p>使用<code>thread-loader</code>：多进程构建<br>和<code>happyPack</code>作用类似，不过使用更简单。<br>需要使用，就将<code>thread-loader</code>放置在其他<code>loader</code>之前（它之后的<code>loader</code>就会在一个单独的<code>worker</code>池中运行）</p>
+</li>
+</ul>
+<ul>
+<li><p>使用<code>Parallel-Uglify-Plugin</code>：多进程并行压缩<br>建议使用当前4版本默认使用的<code>TerserWebpackPlugin</code>，默认就开启了多进程和缓存。</p>
+</li>
+<li><p>使用<code>hard-source-webpack-plugin</code>：缓存<br>为模块提供中间缓存，默认存放路径是：<code>node_modules/.cache/hard-source</code><br>从首次构建之后再构建，时间大约可节省70%-80%左右。</p>
+</li>
+<li><p><code>noParse</code><br>若一些vender(第三方模块)依赖并不需要解析，则可在<code>module.noparse</code>中进行标识，来告诉webpack不用对其进行转化和解析，从而提高构建性能。例如：<code>jquery</code>、    <code>lodash</code></p>
+</li>
+<li><p><code>resolve</code><br>配置webpack如何寻找模块所对应的文件。</p>
+</li>
+<li><p><code>externals</code><br>从输出的<code>bundle</code>中排除依赖，防止将某些<code>import</code>的包打包到<code>bundle</code>中，而是在运行时再从外部获取这些扩展依赖。<br>例如：从CDN引入<code>jquery</code>,而不是把它打包。</p>
+</li>
+<li><p><code>DllPlugin</code><br>….其实也是缓存，配置十分复杂= =。<br>实际上是对bundles进行了拆分，再第一次打包时将公共文件（不会频繁更新的库）打包为DLL文件， 并存到硬盘，并对其生成一个动态链接库。使得打包时间缩短。<br>…..要是实在想试试，那就请下载插件<code>autodll-webpack-plugin</code>，不用你进行复杂配置，它开箱即用。（使用方法😣自己查）<br>webpack5 is coming…dll可以不用学了真的。</p>
+<p>😩按照前端思维考虑之后，你会发现其实就是缓存…..真诚的建议使用<code>hard-source-webpack-plugin</code><br>（而且Vue &amp; React官方都早已经抛弃了DLL…）</p>
+</li>
+</ul>
+<h4 id="2-使用体验"><a href="#2-使用体验" class="headerlink" title="2. 使用体验"></a>2. 使用体验</h4><ul>
+<li>开启模块热替换（HMR/hot-reload）</li>
+<li>使用devtool(source-map)</li>
+</ul>
+<h3 id="优化输出质量"><a href="#优化输出质量" class="headerlink" title="优化输出质量"></a>优化输出质量</h3><ul>
+<li>压缩代码</li>
+<li>区分环境</li>
+<li>CDN加速</li>
+<li>提取公共代码<br>配置<code>optimization.splitChunks</code>（分割代码块）</li>
+<li>压缩图片文件，base64编码，</li>
+<li>Tree Sharking<br>通常用于描述移除js上下文中未引用代码</li>
+</ul>
+
+    </div>
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
+    
+</div>
+    <div class="footer" id="footer">
+    <p>Copyright © 2020 <a class="flink" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek" target="_blank" rel="noopener">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="8U362Q6cy2X6gw6UkMlCYQFj-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="LEnAxkRAgKr9lxAvTbLKBGTo">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>
