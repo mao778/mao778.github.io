@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>
+        Eloïse
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            关于CSS代码组织和管理规范
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h1 id="关于CSS代码组织和管理规范"><a href="#关于CSS代码组织和管理规范" class="headerlink" title="关于CSS代码组织和管理规范"></a>关于CSS代码组织和管理规范</h1><blockquote>
+<p>前端多人项目时，每个人对css的编写有着不同的考虑， 因此常常会导致在Dom中不同风格的class命名、重复编写的CSS块、项目主体色变量的各处定义和引用（导致修改时多处寻找和调节）…等问题。<br>因此特意来整理了前端开发中部分关于代码组织和管理规范方式：OOCSS、 ACSS、BEM、SMACSS</p>
+</blockquote>
+<h2 id="一、OOCSS"><a href="#一、OOCSS" class="headerlink" title="一、OOCSS"></a>一、OOCSS</h2><blockquote>
+<p>Object Oriented CSS</p>
+</blockquote>
+<h3 id="1-是什么"><a href="#1-是什么" class="headerlink" title="1. 是什么"></a>1. 是什么</h3><p>bootstrap就是典型的面向对象css，即oocss.</p>
+<p>面向对象的CSS是一种容易重用的一种CSS规则，这里关键的一点就是如何在页面中识别，创建和模块化可重用的对象，并在页面中任何需要的地方重用，并扩展其附加功能。所以我的理解是，oocss是一种可重用，样式分离，耦合度低的css.    </p>
+<h3 id="2-如何使用"><a href="#2-如何使用" class="headerlink" title="2. 如何使用"></a>2. 如何使用</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//css写法</span></span><br><span class="line">.title<span class="number">-1</span>&#123;</span><br><span class="line">    border-bottom:1px solid #ccc;</span><br><span class="line">    font-size:<span class="number">16</span>px;</span><br><span class="line">    font-weight:bold;</span><br><span class="line">    color:#333;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//OOCSS写法</span></span><br><span class="line">.bb-c&#123;</span><br><span class="line">    border-bottom:1px solid #ccc;</span><br><span class="line">&#125;   </span><br><span class="line">.f16&#123;</span><br><span class="line">    font-size:<span class="number">16</span>px;</span><br><span class="line">&#125;</span><br><span class="line">.bold&#123;</span><br><span class="line">    font-weight:bold;</span><br><span class="line">&#125;</span><br><span class="line">.c333&#123;</span><br><span class="line">    color:#333;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//html</span></span><br><span class="line">&lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"f16 bold c333 bb-c"</span>&gt;标题&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-评价"><a href="#3-评价" class="headerlink" title="3. 评价"></a>3. 评价</h3><ul>
+<li>优点： </li>
+</ul>
+<ol>
+<li>强调重用，减少CSS代码</li>
+<li>选择器简洁</li>
+<li>可扩展类</li>
+<li>强调风格与内容分离</li>
+<li>强调内容与容器分离</li>
+<li>具有清洁的HTML标记，有语义的类名，逻辑性强的层次关系</li>
+<li>语义标记，有助于SEO</li>
+<li>可扩展的标记和CSS样式，有更多的组件可以放到库中，而不影响其他的组件</li>
+</ol>
+<ul>
+<li>缺点：</li>
+</ul>
+<ol>
+<li>OOCSS适合真正的大型网站开发，因为大型网站用到的可重用性组件特别的多，如果运用在小型项目中可能见不到什么成效。所以用不用OOCSS应该根据你的项目来决定。 </li>
+<li>如果没用巧妙的使用，创建组件可能对于你来说是一堆没用的东西，成为一烂摊子，给你的维护带来意想不到的杯具，说不定还是个维护的噩梦。</li>
+<li>最好给每一个组件备写一份说明文档，有助于调用与维护</li>
+<li>创建了数千行CSS，但有可能这些CSS永远不会被使用。比如Twitter Bootstrap</li>
+<li>样式(CSS)和结构(HTML)藕合太紧</li>
+</ol>
+<h2 id="二、ACSS"><a href="#二、ACSS" class="headerlink" title="二、ACSS"></a>二、ACSS</h2><blockquote>
+<p>原子化CSS(Atomic CSS)</p>
+</blockquote>
+<h3 id="1-是什么-1"><a href="#1-是什么-1" class="headerlink" title="1. 是什么"></a>1. 是什么</h3><p>ACSS 的原则是把 CSS 样式打散成尽可能小的部分，每个 CSS 类只对应一条样式规则，从而达到最大化的可复用性。比如 CSS 类 M(10px)所对应的样式规则是 margin: 10px。在应用 CSS 样式时，只需要在把所需要的原子化 CSS 类名添加到 DOM 元素上即可。ACSS 提供了 Atomizer 工具来生成最终的 CSS 样式文件。</p>
+<h3 id="2-如何使用？"><a href="#2-如何使用？" class="headerlink" title="2. 如何使用？"></a>2. 如何使用？</h3><p>在 HTML 页面中，按照 ACSS 的命名方式添加所需要的原子化 CSS 类名，再使用 Atomizer 工具来解析 HTML 页面并生成对应的 CSS 文件。使用 ACSS 的多媒体对象示例:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"BfcHack M(10px)"</span>&gt;</span><br><span class="line">&lt;a href=<span class="string">"http://oocss.org/"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"Fl(start) Mend(10px)"</span>&gt;</span><br><span class="line">&lt;img src=<span class="string">"https://placehold.it/50x50"</span>/&gt;</span><br><span class="line">&lt;<span class="regexp">/a&gt;</span></span><br><span class="line"><span class="regexp">&lt;div class="BfcHack"&gt;</span></span><br><span class="line"><span class="regexp">OOCSS media object</span></span><br><span class="line"><span class="regexp">&lt;/</span>div&gt;</span><br><span class="line">&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ css</span></span><br><span class="line"><span class="regexp">.Fl\(start\) &#123;</span></span><br><span class="line"><span class="regexp"> float: left;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">.M\(10px\) &#123;</span></span><br><span class="line"><span class="regexp"> margin: 10px;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">.Mend\(10px\) &#123;</span></span><br><span class="line"><span class="regexp"> margin-right: 10px;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">.BfcHack &#123;</span></span><br><span class="line"><span class="regexp"> display: table-cell;</span></span><br><span class="line"><span class="regexp"> width: 1600px;</span></span><br><span class="line"><span class="regexp"> *width: auto;</span></span><br><span class="line"><span class="regexp"> zoom: 1;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-评论"><a href="#3-评论" class="headerlink" title="3. 评论"></a>3. 评论</h3><ul>
+<li>优点：</li>
+</ul>
+<ol>
+<li>所生成的css文件只包含必要内容，较少冗余。</li>
+<li>减少css文件大小，提高性能</li>
+<li>将 class name 定义最小化，让全站都可复用</li>
+<li>通过 atomic css 的打包，只会产生用到的样式</li>
+<li>比起 inline 的方式更加简单，不会冲突</li>
+<li>很好压缩，整体 size 小一点</li>
+</ol>
+<ul>
+<li>缺点：</li>
+</ul>
+<ol>
+<li>它与大多开发人员所理解的最佳实践差异很大，可能难接受</li>
+<li>写起来丑</li>
+<li>没有语义化</li>
+</ol>
+<h2 id="三、BEM"><a href="#三、BEM" class="headerlink" title="三、BEM"></a>三、BEM</h2><blockquote>
+<p>BEM代表块（Block），元素（Element），修饰符（Modifier）。</p>
+</blockquote>
+<h3 id="1-是什么？"><a href="#1-是什么？" class="headerlink" title="1. 是什么？"></a>1. 是什么？</h3><p><strong>Block</strong> 是页面中独立存在的区块，可以在不同场合下被重用。每个页面都可以看做是多个Block组成。</p>
+<p> <strong>Element</strong> 是构成Block的元素，只有在对应Block内部才具有意义，是依赖于Block的存在。  </p>
+<p> <strong>Modifier</strong> 是描述Block或Element的属性或状态。同一Block或Element可以有多个Modifier。</p>
+<p>饿了么的<a href="http://element.eleme.io/#/zh-CN/component/collapse" target="_blank" rel="noopener">框架elementUI</a>就是BEM的一种</p>
+<h3 id="2-如何使用？-1"><a href="#2-如何使用？-1" class="headerlink" title="2. 如何使用？"></a>2. 如何使用？</h3><p>命名规范： </p>
+<ul>
+<li><code>-</code> 中划线：仅作为连字符使用，表示某个块或者某个子元素的多单词之间的连接记号。</li>
+<li><code>__</code> 双下划线：双下划线用来连接块和块的子元素</li>
+<li><code>_</code> 单下划线：单下划线用来描述一个块或者块的子元素的一种状态</li>
+</ul>
+<p>BEM 命名约定的模式如下：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.block</span> &#123;&#125;</span><br><span class="line"><span class="selector-class">.block__element</span> &#123;&#125;</span><br><span class="line"><span class="selector-class">.block--modifier</span> &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>每一个 Block 名应该有一个命名空间（前缀）</p>
+<ul>
+<li><code>block</code> 代表了更高级别的抽象或组件</li>
+<li><code>block__element</code> 代表 <code>block</code> 的后代，用于形成一个完整的 <code>block</code> 的整体</li>
+<li><code>block--modifier</code>代表 <code>block</code> 的不同状态或不同版本</li>
+</ul>
+<p>下划线和横线</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">component-name </span><br><span class="line">component-name--modifier-name </span><br><span class="line">component-name__sub-object </span><br><span class="line">component-name__sub-object--modifier-nam</span><br></pre></td></tr></table></figure>
+
+<p>驼峰</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">org-ComponentName </span><br><span class="line">org-ComponentName--modifiername </span><br><span class="line">org-ComponentName-subObject </span><br><span class="line">org-ComponentName-subObject--modifiername</span><br></pre></td></tr></table></figure>
+
+<p>由于市场存在块嵌套另一个块的问题， 可以使用前缀来区分</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">p-页面（Page） （应用于body元素的类）,对可维护性不是那么重要的静态页面十分有用 —应该避免嵌套使用 (例: p-Homepage);</span><br><span class="line">l-布局（Layout）, 比如列（columning），包裹（wrappers） 和容器（containers）等等(例: l-Masthead, l-Footer);</span><br><span class="line">c-组件（components ）(例: c-Dropdown, c-Button…);</span><br><span class="line">u-公共类（Utility classes） — 不会发生改变, 在代码的任何地方都不能重载。(例: u-textCenter, u-clearfix…);</span><br><span class="line">js-JavaScript钩子：永远不应该出现在CSS中。</span><br><span class="line">g-JavaScript钩子：全局js类，永远不应该出现在CSS中</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"c-card"</span>&gt;</span><br><span class="line">    &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"c-card__header"</span>&gt;</span><br><span class="line">        &lt;h2 <span class="class"><span class="keyword">class</span></span>=<span class="string">"c-card__title"</span>&gt;Title text here&lt;<span class="regexp">/h3&gt; </span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt; </span><br><span class="line">    &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"c-card__body"</span>&gt;</span><br><span class="line">        &lt;p&gt;I would like to buy:&lt;<span class="regexp">/p&gt; &lt;!-- Much nicer - a layout module --&gt; </span></span><br><span class="line"><span class="regexp">        &lt;ul class="l-list"&gt;</span></span><br><span class="line"><span class="regexp">             &lt;li class="l-list__item"&gt; &lt;!-- A reusable nested component --&gt; </span></span><br><span class="line"><span class="regexp">                &lt;div class="c-checkbox"&gt; </span></span><br><span class="line"><span class="regexp">                    &lt;input id="option_1" type="checkbox" name="checkbox" class="c-checkbox__input"&gt; </span></span><br><span class="line"><span class="regexp">                    &lt;label for="option_1" class="c-checkbox__label"&gt;Apples&lt;/</span>label&gt; </span><br><span class="line">                &lt;<span class="regexp">/div&gt; </span></span><br><span class="line"><span class="regexp">            &lt;/</span>li&gt; </span><br><span class="line">            &lt;li <span class="class"><span class="keyword">class</span></span>=<span class="string">"l-list__item"</span>&gt; </span><br><span class="line">                &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"c-checkbox"</span>&gt; </span><br><span class="line">                    &lt;input id=<span class="string">"option_2"</span> type=<span class="string">"checkbox"</span> name=<span class="string">"checkbox"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"c-checkbox__input"</span>&gt; </span><br><span class="line">                    &lt;label <span class="keyword">for</span>=<span class="string">"option_2"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"c-checkbox__label"</span>&gt;Pears&lt;<span class="regexp">/label&gt; </span></span><br><span class="line"><span class="regexp">                &lt;/</span>div&gt; </span><br><span class="line">            &lt;<span class="regexp">/li&gt;</span></span><br><span class="line"><span class="regexp">         &lt;/u</span>l&gt; &lt;!-- .l-list --&gt; </span><br><span class="line">    &lt;<span class="regexp">/div&gt; &lt;!-- .c-card__body --&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>div&gt; &lt;!-- .c-card --&gt;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="3-评论-1"><a href="#3-评论-1" class="headerlink" title="3. 评论"></a>3. 评论</h3><ul>
+<li>优点：</li>
+</ul>
+<ol>
+<li>解决了命名空间的问题</li>
+<li>多人协作时，只要有文档清楚标注规则，后来人可以很轻易的读懂，接手</li>
+<li>更易于维护</li>
+</ol>
+<ul>
+<li>缺点：</li>
+</ul>
+<ol>
+<li>容易写的又长又丑</li>
+<li>代码量比较多，没这么简洁</li>
+<li>需要完善的说明文档和规则</li>
+</ol>
+<h2 id="四、SMACSS"><a href="#四、SMACSS" class="headerlink" title="四、SMACSS"></a>四、SMACSS</h2><blockquote>
+<p>表示的是可扩展和模块化 CSS（Scalable and Modular Architecture for CSS）。</p>
+</blockquote>
+<h3 id="1-是什么-2"><a href="#1-是什么-2" class="headerlink" title="1. 是什么"></a>1. 是什么</h3><p>SMACSS 把 CSS 样式规则分成若干个不同的类别：</p>
+<ul>
+<li>基础：该类别中包含的是默认的 CSS 样式。作为其他样式的基础。</li>
+<li>布局：该类别中包含与页面布局相关的 CSS 样式，用来进行模块的排列。</li>
+<li>模块：该类别中包含的是可复用的模块的 CSS 样式。</li>
+<li>状态：该类别中的 CSS 样式用来描述布局和模块在不同状态下的外观。比如在不同的屏幕尺寸下，布局会发生变化。标签式模块的每个标签页可以有显示或隐藏的状态。</li>
+<li>主题：该类别和状态类似，只不过是用来改变布局和模块的视觉效果。</li>
+</ul>
+
+    </div>
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
+    
+</div>
+    <div class="footer" id="footer">
+    <p>Copyright © 2020 <a class="flink" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek" target="_blank" rel="noopener">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="8U362Q6cy2X6gw6UkMlCYQFj-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="LEnAxkRAgKr9lxAvTbLKBGTo">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>
